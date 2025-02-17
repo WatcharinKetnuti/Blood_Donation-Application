@@ -1,4 +1,12 @@
-class ScheduleList {
+import 'dart:convert';
+
+List<Schedule> scheduleListFromJson(String str) =>
+    List<Schedule>.from(json.decode(str).map((x) => Schedule.fromJson(x)));
+
+String scheduleListToJson(List<Schedule> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Schedule {
   final String scheduleId;
   final String scheduleStartDate;
   final String scheduleEndDate;
@@ -13,7 +21,7 @@ class ScheduleList {
   final String locationName;
   final String locationDetail;
 
-  ScheduleList({
+  const Schedule({
     required this.scheduleId,
     required this.scheduleStartDate,
     required this.scheduleEndDate,
@@ -29,8 +37,8 @@ class ScheduleList {
     required this.locationDetail,
   });
 
-  factory ScheduleList.fromJson(Map<String, dynamic> json) {
-    return ScheduleList(
+  factory Schedule.fromJson(Map<String, dynamic> json) {
+    return Schedule(
       scheduleId: json['schedule_id'],
       scheduleStartDate: json['schedule_start_date'],
       scheduleEndDate: json['schedule_end_date'],
@@ -46,16 +54,23 @@ class ScheduleList {
       locationDetail: json['location_detail'],
     );
   }
-}
 
-class Schedule {
-  final String title;
-
-  Schedule({required this.title});
-
-  factory Schedule.fromJson(Map<String, dynamic> json) {
-    return Schedule(
-      title: json['title'],
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'schedule_id': scheduleId,
+      'schedule_start_date': scheduleStartDate,
+      'schedule_end_date': scheduleEndDate,
+      'schedule_start_time': scheduleStartTime,
+      'schedule_end_time': scheduleEndTime,
+      'schedule_max': scheduleMax,
+      'schedule_blood_type': scheduleBloodType,
+      'schedule_status': scheduleStatus,
+      'schedule_detail': scheduleDetail,
+      'location_id': locationId,
+      'admin_id': adminId,
+      'location_name': locationName,
+      'location_detail': locationDetail,
+    };
   }
+
 }

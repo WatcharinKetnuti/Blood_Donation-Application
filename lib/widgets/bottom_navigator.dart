@@ -11,7 +11,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _pageIndex = 0;
-  final List<Widget> _page =[ScheduleListScreen(), login()];
+  final List<Widget> _page =[ScheduleListScreen(), LoginScreen()];
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
