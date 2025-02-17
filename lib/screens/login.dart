@@ -1,4 +1,6 @@
+import 'package:blood_donation_application/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import '../widgets/input_field.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -130,10 +132,13 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RegisterScreen()),
+                            );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

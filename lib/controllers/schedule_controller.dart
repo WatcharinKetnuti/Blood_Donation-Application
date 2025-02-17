@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../models/schedule_model.dart';
-import '../services/schedule_api.dart';
+import 'schedule_api.dart';
 
 class ScheduleController extends GetxController {
   var scheduleList = <Schedule>[].obs;

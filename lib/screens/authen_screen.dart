@@ -2,7 +2,7 @@ import 'package:blood_donation_application/screens/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../services/authenthication_manager.dart';
+import '../controllers/authenthication_manager.dart';
 import '../widgets/bottom_navigator.dart';
 
 class AuthenScreen extends StatelessWidget {
