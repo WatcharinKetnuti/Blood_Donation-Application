@@ -44,7 +44,6 @@ dependencies:
   intl: ^0.20.2
   get: ^4.6.6
   dio: ^4.0.0
-  form_validator:
   get_storage:
 
 

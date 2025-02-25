@@ -1,8 +1,8 @@
-import 'package:blood_donation_application/screens/login.dart';
+import 'package:blood_donation_application/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:blood_donation_application/screens/schedule_list.dart';
-import 'package:blood_donation_application/screens/login.dart';
+import 'package:blood_donation_application/screens/schedulelist_screen.dart';
+import 'package:blood_donation_application/screens/login_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:blood_donation_application/controllers/schedule_controller.dart';
 import 'package:blood_donation_application/models/schedule_model.dart';
-import 'package:blood_donation_application/screens/schedule_detail.dart';
+import 'package:blood_donation_application/screens/scheduledetail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,8 +68,8 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(28.0),
+                      color: Colors.white.withOpacity(1),
+                      borderRadius: BorderRadius.circular(15.0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black54.withOpacity(0.4),

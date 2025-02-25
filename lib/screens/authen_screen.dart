@@ -1,4 +1,4 @@
-import 'package:blood_donation_application/screens/login.dart';
+import 'package:blood_donation_application/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +29,7 @@ class AuthenScreen extends StatelessWidget {
             {
               return _authmanager.isLogged.value
                   ? BottomNavBar()
-                  : LoginScreen();
+                  : BottomNavBar();
             }
         //}
       },

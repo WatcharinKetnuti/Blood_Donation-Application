@@ -1,3 +1,4 @@
+import 'package:blood_donation_application/controllers/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/register_controller.dart';
@@ -18,255 +19,201 @@ class RegisterScreen extends StatelessWidget {
                   ? const BoxConstraints(maxWidth: 450)
                   : const BoxConstraints(maxWidth: 350),
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const FlutterLogo(size: 100),
-                    _gap(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "Blood Donation",
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "กรุณากรอกข้อมูลของคุณ",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'ชื่อ',
-                        hintText: 'กรอกชื่อของคุณ',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'นามสกุล',
-                        hintText: 'กรอกนามสกุลของคุณ',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'อีเมล',
-                        hintText: 'กรอกอีเมล',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'รหัสผ่าน',
-                        hintText: 'Enter your password',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'ยืนยันรหัสผ่าน',
-                        hintText: 'กรอกรหัสผ่านให้ตรงกัน',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'วันเกิด',
-                        hintText: 'กรอกวันเกิดของคุณ',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-
-                    _gap(),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'เบอร์โทร',
-                        hintText: 'กรอกเบอร์โทรของคุณ',
-                        prefixIcon: Icon(Icons.email_outlined),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-
-                    _gap(),
-                    Obx(() => DropdownButtonFormField<String>(
-                          value: registerController.bloodType.value.isEmpty
-                              ? null
-                              : registerController.bloodType.value,
-                          onChanged: (value) =>
-                              registerController.bloodType.value = value ?? '',
-                          decoration: InputDecoration(
-                            labelText: 'กรุ๊ปเลือด',
-                            border: OutlineInputBorder(),
-                          ),
-                          items: ['A', 'B', 'AB', 'O'].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        )),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                child: Form(
+                  key: registerController.formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const FlutterLogo(size: 100),
+                      _gap(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          "Blood Donation",
+                          style: Theme.of(context).textTheme.headlineLarge,
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.redAccent),
-                          ),
-                        ),
-                        onPressed: () {},
                       ),
-                    ),
-
-                    _gap(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "กรุณากรอกข้อมูลของคุณ",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Back to Login',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.firstName,
+                        validator: registerController.validateFirstName,
+                        decoration: const InputDecoration(
+                          labelText: 'ชื่อ',
+                          hintText: 'กรอกชื่อของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.lastName,
+                        validator: registerController.validateLastName,
+                        decoration: const InputDecoration(
+                          labelText: 'นามสกุล',
+                          hintText: 'กรอกนามสกุลของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.email,
+                        validator: registerController.validateEmail,
+                        decoration: const InputDecoration(
+                          labelText: 'อีเมล',
+                          hintText: 'กรอกอีเมล',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.password,
+                        validator: registerController.validatePassword,
+                        decoration: const InputDecoration(
+                          labelText: 'รหัสผ่าน',
+                          hintText: 'Enter your password',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.confirmPassword,
+                        validator: registerController.validateConfirmPassword,
+                        decoration: const InputDecoration(
+                          labelText: 'ยืนยันรหัสผ่าน',
+                          hintText: 'กรอกรหัสผ่านให้ตรงกัน',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.birthdate,
+                        validator: registerController.validateBirthdate,
+                        decoration: const InputDecoration(
+                          labelText: 'วันเกิด',
+                          hintText: 'กรอกวันเกิดของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        readOnly: true,
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100),
+                          );
+                          if (pickedDate != null) {
+                            registerController.birthdate.text =
+                                pickedDate.toString().split(' ')[0];
+                          }
                         },
                       ),
-                    ),
-                  ],
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.tel,
+                        validator: registerController.validateTel,
+                        decoration: const InputDecoration(
+                          labelText: 'เบอร์โทร',
+                          hintText: 'กรอกเบอร์โทรของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      DropdownButtonFormField<String>(
+                        value: registerController.bloodType.text = 'A',
+                        items: <String>['A', 'B', 'AB', 'O']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        decoration: const InputDecoration(
+                          labelText: 'กรุ๊ปเลือด',
+                          hintText: 'กรุ๊ปเลือดของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (String? newValue) {
+                          registerController.bloodType.text = newValue!;
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.redAccent),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (registerController.formKey.currentState!
+                                .validate()) {
+                              registerController.register();
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4)),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              'Back to Login',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      Obx(() => registerController.errorMessage.value.isNotEmpty
+                          ? Text(
+                              registerController.errorMessage.value,
+                              style: TextStyle(color: Colors.red),
+                            )
+                          : SizedBox.shrink()),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        )
-        //   Padding(
-        //   padding: const EdgeInsets.all(16.0),
-        //   child: SingleChildScrollView(
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         TextField(
-        //           onChanged: (value) => registerController.firstName.value = value,
-        //           decoration: InputDecoration(
-        //             labelText: 'First Name',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.lastName.value = value,
-        //           decoration: InputDecoration(
-        //             labelText: 'Last Name',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.email.value = value,
-        //           decoration: InputDecoration(
-        //             labelText: 'Email',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.password.value = value,
-        //           obscureText: true,
-        //           decoration: InputDecoration(
-        //             labelText: 'Password',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.confirmPassword.value = value,
-        //           obscureText: true,
-        //           decoration: InputDecoration(
-        //             labelText: 'Confirm Password',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.birthdate.value = value,
-        //           decoration: InputDecoration(
-        //             labelText: 'Birthdate',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         TextField(
-        //           onChanged: (value) => registerController.tel.value = value,
-        //           decoration: InputDecoration(
-        //             labelText: 'Tel',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //         ),
-        //         SizedBox(height: 16),
-        //         Obx(() => DropdownButtonFormField<String>(
-        //           value: registerController.bloodType.value.isEmpty ? null : registerController.bloodType.value,
-        //           onChanged: (value) => registerController.bloodType.value = value ?? '',
-        //           decoration: InputDecoration(
-        //             labelText: 'Blood Type',
-        //             border: OutlineInputBorder(),
-        //           ),
-        //           items: ['A', 'B', 'AB', 'O'].map((String value) {
-        //             return DropdownMenuItem<String>(
-        //               value: value,
-        //               child: Text(value),
-        //             );
-        //           }).toList(),
-        //         )),
-        //         SizedBox(height: 16),
-        //         Obx(() => registerController.isLoading.value
-        //             ? CircularProgressIndicator()
-        //             : ElevatedButton(
-        //           onPressed: registerController.register,
-        //           child: Text('Register'),
-        //         )),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        ));
   }
 
   Widget _gap() => const SizedBox(height: 16);
