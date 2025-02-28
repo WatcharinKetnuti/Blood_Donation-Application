@@ -1,6 +1,7 @@
 # Blood_Donation-Application
 
-*** In progress 70% ***
+*** In progress ***
+![](https://us-central1-progress-markdown.cloudfunctions.net/progress/70)
 
 
 -My Final Project
