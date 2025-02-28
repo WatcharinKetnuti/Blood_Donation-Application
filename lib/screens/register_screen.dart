@@ -201,12 +201,13 @@ class RegisterScreen extends StatelessWidget {
                           },
                         ),
                       ),
+                      _gap(),
                       Obx(() => registerController.errorMessage.value.isNotEmpty
                           ? Text(
                               registerController.errorMessage.value,
                               style: TextStyle(color: Colors.red),
                             )
-                          : SizedBox.shrink()),
+                          : SizedBox()),
                     ],
                   ),
                 ),

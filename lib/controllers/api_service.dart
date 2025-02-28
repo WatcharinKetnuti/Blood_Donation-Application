@@ -19,13 +19,12 @@ class ApiService {
   }
 
   Future<void> insertMember(Map<String, dynamic> data) async {
-
+    try {
       Response response = await dio.post("/api/insert_member.php", data: data);
       print("Response data: ${response.data}");
-      var responseData = json.decode(response.data);
-      print("Response data: ${responseData}");
 
       if (response.statusCode == 200) {
+        var responseData = json.decode(response.data);
         if (responseData["success"] == false) {
           print("Failed to insert data: ${responseData}");
           print(responseData['message']);
@@ -37,6 +36,26 @@ class ApiService {
         print("Server error: ${response.statusMessage}");
         throw Exception(response.statusMessage);
       }
-
+    } catch (e) {
+      print("Error: $e");
+      throw e;
+    }
   }
+
+  Future<Map<String, dynamic>?> login(String email, String password) async {
+
+      Response response = await dio.post("/api/login.php", data: {
+        'member_email': email,
+        'member_password': password,
+      });
+
+      if (response.statusCode == 200) {
+        var result = json.decode(response.data);
+        if(result['error'] != null)
+        {
+          return result;
+        }
+      }
+  }
+
 }

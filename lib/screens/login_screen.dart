@@ -1,18 +1,19 @@
 import 'package:blood_donation_application/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/login_controller.dart';
 import '../widgets/input_field.dart';
 
 class LoginScreen extends StatelessWidget {
-
-  bool _isPasswordVisible = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.redAccent,
       body: Form(
-        key: _formKey,
+        key: loginController.formKey,
         child: Center(
           child: Card(
             elevation: 8,
@@ -43,54 +44,34 @@ class LoginScreen extends StatelessWidget {
                     ),
                     _gap(),
                     TextFormField(
-                      validator: (value) {
-                        // add email validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-
-                        bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value);
-                        if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
-
-                        return null;
-                      },
+                      controller: loginController.email,
+                      validator: loginController.validateEmail,
                       decoration: const InputDecoration(
                         labelText: 'Email',
-                        hintText: 'Enter your email',
+                        hintText: 'อีเมล',
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
                       ),
                     ),
                     _gap(),
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                      obscureText: !_isPasswordVisible,
+                    Obx(() => TextFormField(
+                      controller: loginController.password,
+                      validator: loginController.validatePassword,
+                      obscureText: !loginController.isPasswordVisible.value,
                       decoration: InputDecoration(
                           labelText: 'Password',
                           hintText: 'Enter your password',
                           prefixIcon: const Icon(Icons.lock_outline_rounded),
                           border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            icon: Icon(_isPasswordVisible
+                          suffixIcon:  IconButton(
+                            icon: Icon(loginController.isPasswordVisible.value
                                 ? Icons.visibility_off
                                 : Icons.visibility),
                             onPressed: () {
-
+                              loginController.togglePasswordVisibility();
                             },
                           )),
+                      )
                     ),
                     _gap(),
                     _gap(),
@@ -106,11 +87,15 @@ class LoginScreen extends StatelessWidget {
                           child: Text(
                             'Sign in',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.redAccent),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent),
                           ),
                         ),
                         onPressed: () {
-
+                          if (loginController.formKey.currentState!.validate()) {
+                            loginController.login();
+                          }
                         },
                       ),
                     ),
@@ -128,17 +113,29 @@ class LoginScreen extends StatelessWidget {
                           child: Text(
                             'Sign up',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white,),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => RegisterScreen()),
-                            );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
+                          );
                         },
                       ),
                     ),
+                    _gap(),
+                    Obx(() {
+                      if (loginController.isLoading.value) {
+                        return const CircularProgressIndicator();
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    }),
                   ],
                 ),
               ),

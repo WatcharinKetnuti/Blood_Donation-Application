@@ -29,7 +29,7 @@ class AuthenScreen extends StatelessWidget {
             {
               return _authmanager.isLogged.value
                   ? BottomNavBar()
-                  : BottomNavBar();
+                  : LoginScreen();
             }
         //}
       },
