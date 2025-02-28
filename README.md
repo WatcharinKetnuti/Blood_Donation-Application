@@ -1,7 +1,7 @@
 # Blood_Donation-Application
 
-#In progress
+*** In progress 70% ***
 
-Crossplatforms Application
+
 -My Final Project
 -MUT University[bachelor's degree]
