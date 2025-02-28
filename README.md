@@ -1,2 +1,7 @@
 # Blood_Donation-Application
-My Final Project -MUT University[bachelor's degree] Crossplatforms Application
+
+#In progress
+
+Crossplatforms Application
+-My Final Project
+-MUT University[bachelor's degree]
