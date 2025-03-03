@@ -55,23 +55,25 @@ class LoginScreen extends StatelessWidget {
                     ),
                     _gap(),
                     Obx(() => TextFormField(
-                      controller: loginController.password,
-                      validator: loginController.validatePassword,
-                      obscureText: !loginController.isPasswordVisible.value,
-                      decoration: InputDecoration(
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
-                          prefixIcon: const Icon(Icons.lock_outline_rounded),
-                          border: const OutlineInputBorder(),
-                          suffixIcon:  IconButton(
-                            icon: Icon(loginController.isPasswordVisible.value
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () {
-                              loginController.togglePasswordVisibility();
-                            },
-                          )),
-                      )
+                          controller: loginController.password,
+                          validator: loginController.validatePassword,
+                          obscureText: !loginController.isPasswordVisible.value,
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              hintText: 'Enter your password',
+                              prefixIcon:
+                                  const Icon(Icons.lock_outline_rounded),
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                    loginController.isPasswordVisible.value
+                                        ? Icons.visibility_off
+                                        : Icons.visibility),
+                                onPressed: () {
+                                  loginController.togglePasswordVisibility();
+                                },
+                              )),
+                        )
                     ),
                     _gap(),
                     _gap(),
@@ -129,13 +131,18 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     _gap(),
-                    Obx(() {
-                      if (loginController.isLoading.value) {
-                        return const CircularProgressIndicator();
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }),
+                    Obx(() => loginController.isLoading.value ?
+                        CircularProgressIndicator()
+                        : SizedBox()
+                    ),
+
+                    Obx(() => loginController.errorMessage.value.isNotEmpty ?
+                        Text(
+                            loginController.errorMessage.value,
+                            style: TextStyle(color: Colors.red),
+                        )
+                        : SizedBox()
+                    ),
                   ],
                 ),
               ),

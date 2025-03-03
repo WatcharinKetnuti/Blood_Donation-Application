@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/authenthication_manager.dart';
-import '../widgets/bottom_navigator.dart';
+import '../widgets/bottom_navbar.dart';
 
 class AuthenScreen extends StatelessWidget {
   final AuthenticationManager _authmanager = Get.put(AuthenticationManager());
@@ -20,18 +20,19 @@ class AuthenScreen extends StatelessWidget {
     return FutureBuilder(
       future: initializeSettings(),
       builder: (context, snapshot) {
-        // if (snapshot.connectionState == ConnectionState.waiting) {
-        //   return waitingView();
-        // } else {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return waitingView();
+        } else {
           if (snapshot.hasError)
             return errorView(snapshot);
           else
             {
-              return _authmanager.isLogged.value
+              AuthenticationManager auth = Get.find();
+              return auth.isLogged.value
                   ? BottomNavBar()
                   : LoginScreen();
             }
-        //}
+        }
       },
     );
   }

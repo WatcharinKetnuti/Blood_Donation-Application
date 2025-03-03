@@ -50,9 +50,16 @@ class ApiService {
       });
 
       if (response.statusCode == 200) {
+
         var result = json.decode(response.data);
-        if(result['error'] != null)
-        {
+
+        print('=== api_service ===');
+        print(result);
+
+        if(result['success'] == false) {
+          return null;
+        }else{
+          print(result['0']['member_id']);
           return result;
         }
       }
