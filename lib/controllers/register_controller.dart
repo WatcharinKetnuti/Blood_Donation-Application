@@ -1,10 +1,10 @@
-import 'package:blood_donation_application/controllers/cache_manager.dart';
+import 'package:blood_donation_application/services/cache_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/member_model.dart';
-import 'api_service.dart';
+import '../services/api_service.dart';
 
 class RegisterController extends GetxController {
   Dio dio = Dio();

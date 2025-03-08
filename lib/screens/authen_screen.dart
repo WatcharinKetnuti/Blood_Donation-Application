@@ -2,7 +2,8 @@ import 'package:blood_donation_application/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/authenthication_manager.dart';
+import '../controllers/login_controller.dart';
+import '../services/authenthication_manager.dart';
 import '../widgets/bottom_navbar.dart';
 
 class AuthenScreen extends StatelessWidget {
@@ -11,12 +12,12 @@ class AuthenScreen extends StatelessWidget {
   Future<void> initializeSettings() async {
     _authmanager.checkLoginStatus();
 
-    //Simulate other services for 3 seconds
     await Future.delayed(Duration(seconds: 3));
   }
 
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => LoginController());
     return FutureBuilder(
       future: initializeSettings(),
       builder: (context, snapshot) {

@@ -1,4 +1,5 @@
 import 'package:blood_donation_application/screens/login_screen.dart';
+import 'package:blood_donation_application/screens/reserved_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:blood_donation_application/screens/schedulelist_screen.dart';
@@ -13,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _pageIndex = 0;
-  final List<Widget> _page =[ScheduleListScreen(), LoginScreen(), ProfileScreen()];
+  final List<Widget> _page =[ScheduleListScreen(), ReservedScreen(), ProfileScreen()];
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override

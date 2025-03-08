@@ -21,7 +21,7 @@ class Schedule {
   final String locationName;
   final String locationDetail;
 
-  const Schedule({
+  Schedule({
     required this.scheduleId,
     required this.scheduleStartDate,
     required this.scheduleEndDate,

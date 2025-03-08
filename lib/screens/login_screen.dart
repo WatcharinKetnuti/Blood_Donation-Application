@@ -72,7 +72,8 @@ class LoginScreen extends StatelessWidget {
                                 onPressed: () {
                                   loginController.togglePasswordVisibility();
                                 },
-                              )),
+                              )
+                          ),
                         )
                     ),
                     _gap(),
@@ -121,13 +122,9 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterScreen()),
-                          );
-                        },
+                          onPressed: () {
+                            Get.to(() => RegisterScreen());
+                          }
                       ),
                     ),
                     _gap(),

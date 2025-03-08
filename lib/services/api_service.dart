@@ -18,6 +18,15 @@ class ApiService {
     }
   }
 
+  Future<dynamic> getReserved() async {
+    try {
+      return await dio.get('/api/reserved_list.php.php');
+    }
+    catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> insertMember(Map<String, dynamic> data) async {
     try {
       Response response = await dio.post("/api/insert_member.php", data: data);
@@ -43,7 +52,7 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
-
+    print(' = api_service func login =');
       Response response = await dio.post("/api/login.php", data: {
         'member_email': email,
         'member_password': password,
@@ -53,7 +62,7 @@ class ApiService {
 
         var result = json.decode(response.data);
 
-        print('=== api_service ===');
+
         print(result);
 
         if(result['success'] == false) {
@@ -63,6 +72,9 @@ class ApiService {
           return result;
         }
       }
+    print(' = api_service func login =');
   }
+
+
 
 }

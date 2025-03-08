@@ -1,4 +1,4 @@
-import 'package:blood_donation_application/controllers/cache_manager.dart';
+import 'package:blood_donation_application/services/cache_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/register_controller.dart';
@@ -197,7 +197,7 @@ class RegisterScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Get.back();
                           },
                         ),
                       ),

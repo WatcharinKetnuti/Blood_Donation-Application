@@ -8,21 +8,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import '../widgets/list_card.dart';
 
-class ScheduleListScreen extends StatefulWidget {
-  const ScheduleListScreen({super.key});
-
-  @override
-  State<ScheduleListScreen> createState() => _ScheduleListScreenState();
-}
-
-class _ScheduleListScreenState extends State<ScheduleListScreen> {
+class ScheduleListScreen extends StatelessWidget {
   final scheduleController = Get.put(ScheduleController());
-
-  @override
-  void initState() {
-    super.initState();
-    scheduleController.fetchSchedules();
-  }
 
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
