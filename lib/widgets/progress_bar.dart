@@ -4,31 +4,28 @@ import 'package:get/get.dart';
 
 
 class ProgressBar extends StatelessWidget {
-  var progressPercentage = 0.0;
+  var progressPercentage = 10.0.obs;
 
   @override
   Widget build(BuildContext context) {
     return
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ArcProgressBar(
-            percentage: progressPercentage,
-            arcThickness: 15,
-            innerPadding: 48,
-            strokeCap: StrokeCap.round,
-            handleSize: 0,
-            foregroundColor: Colors.redAccent,
-            backgroundColor: Colors.red.shade100,
-            bottomCenterWidget: Column(
-              children: [
-                Text('${progressPercentage}'),
-                const Text("Day"),
-                const Text("Left"),
-              ],
-            ),
+      Obx(() {
+        return ArcProgressBar(
+          percentage: progressPercentage.value,
+          arcThickness: 25,
+          innerPadding: 60,
+          strokeCap: StrokeCap.round,
+          handleSize: 0,
+          foregroundColor: Colors.redAccent,
+          backgroundColor: Colors.red.shade100,
+          bottomCenterWidget: Column(
+            children: [
+              Text('${progressPercentage.value}'),
+              const Text("Day"),
+              const Text("Left"),
+            ],
           ),
-        ],
-      );
+        );
+      });
   }
 }

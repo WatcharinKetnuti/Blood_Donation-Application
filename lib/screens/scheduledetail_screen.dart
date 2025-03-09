@@ -20,19 +20,11 @@ class ScheduleDetail extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Start Date: ${schedule.scheduleStartDate}',
+              'Date: ${schedule.scheduleStartDate} - ${schedule.scheduleEndDate}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'End Date: ${schedule.scheduleEndDate}',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Start Time: ${schedule.scheduleStartTime}',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'End Time: ${schedule.scheduleEndTime}',
+              'Start Time: ${schedule.scheduleStartTime} - ${schedule.scheduleEndTime}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
@@ -43,13 +35,9 @@ class ScheduleDetail extends StatelessWidget {
               'Blood Type: ${schedule.scheduleBloodType}',
               style: TextStyle(fontSize: 18),
             ),
-            Text(
-              'Status: ${schedule.scheduleStatus}',
-              style: TextStyle(fontSize: 18),
-            ),
             SizedBox(height: 10),
             Text(
-              'Details:',
+              'Detail:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(

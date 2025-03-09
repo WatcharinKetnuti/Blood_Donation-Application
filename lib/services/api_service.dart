@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 
 class ApiService {
   final dio = Dio() = Dio(BaseOptions(
@@ -20,7 +19,16 @@ class ApiService {
 
   Future<dynamic> getReserved() async {
     try {
-      return await dio.get('/api/reserved_list.php.php');
+      return await dio.get('/api/reserved_list.php');
+    }
+    catch (e) {
+      print(e);
+    }
+  }
+
+  Future<dynamic> getLocation() async {
+    try {
+      return await dio.get('/api/location_list.php');
     }
     catch (e) {
       print(e);
@@ -59,10 +67,7 @@ class ApiService {
       });
 
       if (response.statusCode == 200) {
-
         var result = json.decode(response.data);
-
-
         print(result);
 
         if(result['success'] == false) {

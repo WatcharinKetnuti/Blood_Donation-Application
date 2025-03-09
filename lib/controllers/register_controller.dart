@@ -20,7 +20,7 @@ class RegisterController extends GetxController {
   // final  confirmPassword = TextEditingController();
   // final  birthdate = TextEditingController();
   // final  tel = TextEditingController();
-  // final  bloodType = TextEditingController();
+  final  bloodType = TextEditingController();
 
   final firstName = TextEditingController(text: 'Default First Name');
   final lastName = TextEditingController(text: 'Default Last Name');
@@ -29,7 +29,7 @@ class RegisterController extends GetxController {
   final confirmPassword = TextEditingController(text: 'defaultpassword');
   final birthdate = TextEditingController(text: '2000-01-01');
   final tel = TextEditingController(text: '0123456789');
-  final bloodType = TextEditingController(text: 'A');
+  //final bloodType = TextEditingController(text: 'A');
 
 
 
