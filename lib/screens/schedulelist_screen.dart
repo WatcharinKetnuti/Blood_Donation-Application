@@ -1,3 +1,4 @@
+import 'package:blood_donation_application/controllers/login_controller.dart';
 import 'package:blood_donation_application/controllers/schedule_controller.dart';
 import 'package:blood_donation_application/models/location_model.dart';
 import 'package:blood_donation_application/screens/scheduledetail_screen.dart';
@@ -9,7 +10,6 @@ import 'package:intl/intl.dart';
 
 class ScheduleListScreen extends StatelessWidget {
   final scheduleController = Get.put(ScheduleController());
-
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
     return DateFormat('dd/MM/yyyy').format(parsedDate);
@@ -34,6 +34,21 @@ class ScheduleListScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(CupertinoIcons.arrow_up_bin_fill), // Icon on the top-right corner
+            onPressed: () {
+              scheduleController.location.text = '';
+              scheduleController.blood.value = false;
+              scheduleController.date.text = '';
+              scheduleController.fetchSchedules(
+                  scheduleController.location.text,
+                  scheduleController.date.text,
+                  scheduleController.blood.value
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -41,14 +56,6 @@ class ScheduleListScreen extends StatelessWidget {
             padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
-                // Text(
-                //   'กำหนดการบริจาคโลหิต',
-                //   style: TextStyle(
-                //     fontSize: 25.0,
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.white,
-                //   ),
-                // ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -69,7 +76,7 @@ class ScheduleListScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: TextFormField(
-                                //controller: registerController.birthdate,
+                                controller: scheduleController.date,
                                 decoration: const InputDecoration(
                                   hintText: 'วันบริจาค',
                                   prefixIcon: Icon(Icons.calendar_today_outlined),
@@ -85,8 +92,9 @@ class ScheduleListScreen extends StatelessWidget {
                                   );
                                   if (pickedDate != null) {
                                     // Format the selected date as "dd MM yy"
-                                    String formattedDate = DateFormat('dd MM yy').format(pickedDate);
-                                    //dateController.text = formattedDate; // Update text field
+                                    String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                    scheduleController.date.text = formattedDate; // Update text field
+                                    scheduleController.fetchSchedules(scheduleController.location.text,scheduleController.date.text, scheduleController.blood.value);
                                   }
                                 },
                               ),
@@ -102,6 +110,11 @@ class ScheduleListScreen extends StatelessWidget {
                                   value: scheduleController.blood.value,
                                   onChanged: (bool? value) {
                                     scheduleController.blood_valuechange();
+                                    scheduleController.fetchSchedules(
+                                        scheduleController.location.text,
+                                        scheduleController.date.text,
+                                        scheduleController.blood.value
+                                    );
                                   }
                               );
                           }),
@@ -132,6 +145,7 @@ class ScheduleListScreen extends StatelessWidget {
                                 ),
                                 onChanged: (String? newValue) {
                                   scheduleController.location.text = newValue!;
+                                  scheduleController.fetchSchedules(scheduleController.location.text,scheduleController.date.text, scheduleController.blood.value);
                                 },
                               ),
                             );
@@ -148,64 +162,70 @@ class ScheduleListScreen extends StatelessWidget {
             if (scheduleController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             }
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: scheduleController.scheduleList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin:
+            else if(scheduleController.scheduleList.isEmpty){
+              return Center(child: Text('ไม่พบข้อมูล', style: TextStyle(fontSize: 20.0, color: Colors.white)));
+            }
+            else{
+              return
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: scheduleController.scheduleList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin:
                         EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(1),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 16.0),
-                        leading: Icon(
-                          Icons.calendar_today_outlined,
-                          color: Colors.black54,
-                          size: 30.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(1),
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        title: Text(
-                          "${scheduleController.scheduleList[index].locationName}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22.0,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        subtitle: Text(
-                          " ${formatDate(scheduleController.scheduleList[index].scheduleStartDate)} - ${formatDate(scheduleController.scheduleList[index].scheduleEndDate)} \n"
-                          " ${formatTime(scheduleController.scheduleList[index].scheduleStartTime)} - ${formatTime(scheduleController.scheduleList[index].scheduleEndTime)} \n",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        trailing: Text(
-                          "จำนวนที่รับ: ${scheduleController.scheduleList[index].scheduleMax} คน\n"
-                          "หมู่เลือด: ${scheduleController.scheduleList[index].scheduleBloodType} \n",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black54,
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
-                        onTap: () {
-                          showModalBottomSheet(
-                            constraints: BoxConstraints(
-                              maxHeight:
+                        child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 16.0),
+                            leading: Icon(
+                              Icons.calendar_today_outlined,
+                              color: Colors.black54,
+                              size: 30.0,
+                            ),
+                            title: Text(
+                              "${scheduleController.scheduleList[index].locationName}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22.0,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            subtitle: Text(
+                              " ${formatDate(scheduleController.scheduleList[index].scheduleStartDate)} - ${formatDate(scheduleController.scheduleList[index].scheduleEndDate)} \n"
+                                  " ${formatTime(scheduleController.scheduleList[index].scheduleStartTime)} - ${formatTime(scheduleController.scheduleList[index].scheduleEndTime)} \n",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            trailing: Text(
+                              "จำนวนที่รับ: ${scheduleController.scheduleList[index].scheduleMax} คน\n"
+                                  "หมู่เลือด: ${scheduleController.scheduleList[index].scheduleBloodType == "" ? "ไม่ระบุ" : scheduleController.scheduleList[index].scheduleBloodType} \n",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black54,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                            onTap: () {
+                              showModalBottomSheet(
+                                constraints: BoxConstraints(
+                                  maxHeight:
                                   MediaQuery.of(context).size.height * 0.8,
-                            ),
-                            context: context,
-                            builder: (context) => ScheduleDetail(
-                              schedule: scheduleController.scheduleList[index],
-                            ),
-                          );
-                        }),
-                  );
-                });
+                                ),
+                                context: context,
+                                builder: (context) => ScheduleDetail(
+                                  schedule: scheduleController.scheduleList[index],
+                                ),
+                              );
+                            }),
+                      );
+                    });
+            }
           }),
         ],
       ),

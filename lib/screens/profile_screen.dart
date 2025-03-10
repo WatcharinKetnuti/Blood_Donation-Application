@@ -10,7 +10,6 @@ import 'authen_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-  final LoginController loginController = Get.find();
 
   @override
   Widget build(BuildContext context) {

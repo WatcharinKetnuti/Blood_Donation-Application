@@ -3,7 +3,7 @@ import '../widgets/progress_bar.dart';
 import 'package:get/get.dart';
 import '../controllers/reserved_controller.dart';
 
-class ReservedScreen extends StatelessWidget {
+class MyReservedScreen extends StatelessWidget {
   final reservedController = Get.put(ReservedController());
 
   @override

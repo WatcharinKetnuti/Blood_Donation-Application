@@ -5,20 +5,21 @@ import '../services/api_service.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleController extends GetxController {
+  ApiService request = ApiService();
+
   var scheduleList = <Schedule>[].obs;
   var locationList = <Location>[].obs;
   final isLoading = true.obs;
+  final location = TextEditingController();
+  final date = TextEditingController();
   var blood = false.obs;
 
-  ApiService request = ApiService();
-
-  final  location = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
 
-    fetchSchedules();
+    fetchSchedules(location.text, date.text, blood.value);
     fetchLocations();
     print('locationlist');
   }
@@ -28,9 +29,15 @@ class ScheduleController extends GetxController {
     print(blood.value);
   }
 
+  void refresh() {
+    fetchSchedules(location.text, date.text, blood.value);
+  }
 
-  void fetchSchedules() async {
-    await request.getSchedule().then((value) {
+
+  void fetchSchedules(location, date, blood) async {
+    print('=== login_controoler fetchSchedules-func ===');
+    print('fetch ${location}');
+    await request.getSchedule(location, date, blood).then((value) {
       if (value.statusCode == 200){
         scheduleList.value = scheduleListFromJson(value.data);
         isLoading.value = false;
@@ -40,7 +47,6 @@ class ScheduleController extends GetxController {
     }).catchError((onError){
       printError();
     });
-
   }
 
 
@@ -58,4 +64,23 @@ class ScheduleController extends GetxController {
     });
 
   }
+
+  // void Filter() async {
+  //   print('=== login_controoler Filter-func ===');
+  //
+  //
+  //   var response = await apiService.login(email.text, password.text);
+  //   isResponseReceived = true;
+  //   print(response);
+  //
+  //   if (response != null) {
+  //     box.write('member', response['0']);
+  //     Get.snackbar('Success', 'Login successful');
+  //     _authManager.login(response['token']);
+  //     Get.offAll(() => AuthenScreen());
+  //   } else {
+  //     errorMessage.value = 'อีเมล หรือ รหัสผ่านไม่ถูกต้อง';
+  //   }
+  //   isLoading.value = false;
+  // }
 }

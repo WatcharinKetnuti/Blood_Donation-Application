@@ -1,16 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'authenthication_manager.dart';
+import 'package:dio/dio.dart'as DIO;
 
 class ApiService {
-  final dio = Dio() = Dio(BaseOptions(
+  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
+  final dio = DIO.Dio(DIO.BaseOptions(
     baseUrl: 'http://localhost/Blood_Donation-Web/',
   ));
 
-  Future<dynamic> getSchedule() async {
+  Future<dynamic> getSchedule(String location,String date,bool blood) async {
+    _authManager.getMember();
+    final blood_value = blood? _authManager.member.value.memberBloodType:'';
+
     try {
-      return await dio.get('/api/schedule_list.php');
+      var url = 'http://localhost/Blood_Donation-Web/api/schedule_list.php?location=$location&date=$date&blood=$blood_value';
+      print(url);
+      return await dio.get('/api/schedule_list.php?location=$location&date=$date&blood=$blood_value');
     }
     catch (e) {
       print(e);
@@ -37,7 +44,7 @@ class ApiService {
 
   Future<void> insertMember(Map<String, dynamic> data) async {
     try {
-      Response response = await dio.post("/api/insert_member.php", data: data);
+      DIO.Response response = await dio.post("/api/insert_member.php", data: data);
       print("Response data: ${response.data}");
 
       if (response.statusCode == 200) {
@@ -61,7 +68,7 @@ class ApiService {
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
     print(' = api_service func login =');
-      Response response = await dio.post("/api/login.php", data: {
+    DIO.Response response = await dio.post("/api/login.php", data: {
         'member_email': email,
         'member_password': password,
       });
@@ -79,6 +86,8 @@ class ApiService {
       }
     print(' = api_service func login =');
   }
+
+
 
 
 

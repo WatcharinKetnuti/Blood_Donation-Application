@@ -15,29 +15,29 @@ class ScheduleDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Location: ${schedule.locationName}',
+              '${schedule.locationName}',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
-              'Date: ${schedule.scheduleStartDate} - ${schedule.scheduleEndDate}',
+              'วัน: ${schedule.scheduleStartDate} - ${schedule.scheduleEndDate}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Start Time: ${schedule.scheduleStartTime} - ${schedule.scheduleEndTime}',
+              'เวลา: ${schedule.scheduleStartTime} - ${schedule.scheduleEndTime}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Max Participants: ${schedule.scheduleMax}',
+              'รับ: ${schedule.scheduleMax} คน',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Blood Type: ${schedule.scheduleBloodType}',
+              'หมู่เลือด: ${schedule.scheduleBloodType == '' ? 'ไม่ระบุ' : schedule.scheduleBloodType}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Detail:',
+              'รายละเอียด:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(
@@ -71,7 +71,7 @@ class ScheduleDetail extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                 ),
                 child: Text(
-                  'Reserve',
+                  'จอง',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

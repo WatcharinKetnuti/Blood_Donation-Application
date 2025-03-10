@@ -20,9 +20,9 @@ class ProgressBar extends StatelessWidget {
           backgroundColor: Colors.red.shade100,
           bottomCenterWidget: Column(
             children: [
-              Text('${progressPercentage.value}'),
-              const Text("Day"),
-              const Text("Left"),
+              const Text("อีก"),
+              Text('${progressPercentage.value}วัน'),
+              const Text(""),
             ],
           ),
         );
