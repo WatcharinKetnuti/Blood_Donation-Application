@@ -99,12 +99,11 @@ class RegisterController extends GetxController {
 
 
 
-
-
   Future<void> register() async {
     isLoading(true);
     errorMessage.value = '';
     Member member = Member(
+      memberID: '',
       memberFname: firstName.text,
       memberLname: lastName.text,
       memberEmail: email.text,

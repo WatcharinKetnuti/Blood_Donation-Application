@@ -66,6 +66,30 @@ class ApiService {
     }
   }
 
+  Future<void> insertReserve(Map<String, dynamic> data) async {
+    try {
+      DIO.Response response = await dio.post("/api/insert_reserve.php", data: data);
+      print("Response data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        var responseData = json.decode(response.data);
+        if (responseData["success"] == false) {
+          print("Failed to insert data: ${responseData}");
+          print(responseData['message']);
+          throw Exception(responseData['message']);
+        } else {
+          print("Data inserted successfully: ${responseData}");
+        }
+      } else {
+        print("Server error: ${response.statusMessage}");
+        throw Exception(response.statusMessage);
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw e;
+    }
+  }
+
   Future<Map<String, dynamic>?> login(String email, String password) async {
     print(' = api_service func login =');
     DIO.Response response = await dio.post("/api/login.php", data: {

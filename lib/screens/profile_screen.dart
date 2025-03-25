@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Colors.redAccent,
       body:
       Obx(() {
-        _authManager.getMember();
+        //_authManager.getMember();
         final member = _authManager.member.value;
         return Center(
           child: Container(

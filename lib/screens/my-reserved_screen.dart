@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/progress_bar.dart';
 import 'package:get/get.dart';
-import '../controllers/reserved_controller.dart';
+import '../controllers/my_reserved_controller.dart';
 
 class MyReservedScreen extends StatelessWidget {
-  final reservedController = Get.put(ReservedController());
+  final reservedController = Get.put(MyReservedController());
 
   @override
   Widget build(BuildContext context) {

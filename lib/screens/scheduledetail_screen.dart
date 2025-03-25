@@ -1,10 +1,18 @@
+import 'package:blood_donation_application/controllers/reserve_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import '../controllers/schedule_controller.dart';
 import '../models/schedule_model.dart';
+import '../services/authenthication_manager.dart';
 
 class ScheduleDetail extends StatelessWidget {
   final Schedule schedule;
+  final reserveController = Get.put (ReserveController());
+  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
 
-  const ScheduleDetail({Key? key, required this.schedule}) : super(key: key);
+
+   ScheduleDetail({Key? key, required this.schedule}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +55,43 @@ class ScheduleDetail extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            // TextField(
-            //   controller: _dateController,
-            //   readOnly: true,
-            //   decoration: InputDecoration(
-            //     labelText: 'Select Date',
-            //     suffixIcon: IconButton(
-            //       icon: Icon(Icons.calendar_today),
-            //       onPressed: () => _selectDate(context),
-            //     ),
-            //   ),
-            // ),
+
             SizedBox(height: 10),
 
+              Form(
+                key: reserveController.formKey,
+                child: TextFormField(
+                  controller: reserveController.donationDate,
+                  validator: reserveController.validateDonationdate,
+                  decoration: const InputDecoration(
+                    hintText: 'เลือกวันที่',
+                    prefixIcon: Icon(Icons.calendar_today_outlined),
+                    border: OutlineInputBorder(),
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime.parse(schedule.scheduleStartDate),
+                      lastDate: DateTime.parse(schedule.scheduleEndDate),
+                    );
+                    if (pickedDate != null) {
+                      reserveController.donationDate.text = pickedDate.toString().split(' ')[0];
+                    }
+                  },
+                ),
+              ),
+
+
+            SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Add your reserve logic here
+                  if (reserveController.formKey.currentState!.validate()) {
+                    reserveController.scheduleId = schedule.scheduleId;
+                    reserveController.reserve();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,

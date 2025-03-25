@@ -5,6 +5,7 @@ import '../services/cache_manager.dart';
 class AuthenticationManager extends GetxController with CacheManager {
   final isLogged = false.obs;
   var member = Member(
+    memberID: '',
     memberFname: '',
     memberLname: '',
     memberBirthDate: DateTime.now(),

@@ -7,6 +7,7 @@ String memberToJson(List<Member> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Member {
+  final String memberID;
   final String memberFname;
   final String memberLname;
   final DateTime memberBirthDate;
@@ -16,6 +17,7 @@ class Member {
   final String memberPassword;
 
   Member({
+    required this.memberID,
     required this.memberFname,
     required this.memberLname,
     required this.memberBirthDate,
@@ -27,6 +29,7 @@ class Member {
 
   factory Member.fromJson(Map<String, dynamic> json) {
     return Member(
+      memberID: json['member_id'],
       memberFname: json['member_fname'],
       memberLname: json['member_lname'],
       memberBirthDate: DateTime.parse(json['member_birth_date']),
@@ -39,6 +42,7 @@ class Member {
 
   Map<String, dynamic> toJson() {
     return {
+      'member_id': memberID,
       'member_fname': memberFname,
       'member_lname': memberLname,
       'member_birth_date': memberBirthDate.toIso8601String(),

@@ -21,7 +21,6 @@ class LoginController extends GetxController {
   var errorMessage = ''.obs;
 
 
-
   final email = TextEditingController(text: 'default@example.com');
   final password = TextEditingController(text: 'defaultpassword');
 
@@ -66,6 +65,7 @@ class LoginController extends GetxController {
       box.write('member', response['0']);
       Get.snackbar('Success', 'Login successful');
       _authManager.login(response['token']);
+      _authManager.getMember();
       Get.offAll(() => AuthenScreen());
     } else {
       errorMessage.value = 'อีเมล หรือ รหัสผ่านไม่ถูกต้อง';

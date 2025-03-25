@@ -1,4 +1,4 @@
-import 'package:blood_donation_application/controllers/reserved_controller.dart';
+import 'package:blood_donation_application/controllers/my_reserved_controller.dart';
 import 'package:blood_donation_application/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

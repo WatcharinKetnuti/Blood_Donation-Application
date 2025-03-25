@@ -9,19 +9,17 @@ class ScheduleController extends GetxController {
 
   var scheduleList = <Schedule>[].obs;
   var locationList = <Location>[].obs;
+  var blood = false.obs;
   final isLoading = true.obs;
   final location = TextEditingController();
   final date = TextEditingController();
-  var blood = false.obs;
 
 
   @override
   void onInit() {
     super.onInit();
 
-    fetchSchedules(location.text, date.text, blood.value);
-    fetchLocations();
-    print('locationlist');
+    refresh();
   }
 
   void blood_valuechange(){
@@ -29,13 +27,14 @@ class ScheduleController extends GetxController {
     print(blood.value);
   }
 
-  void refresh() {
+  void refresh(){
     fetchSchedules(location.text, date.text, blood.value);
+    fetchLocations();
   }
 
 
   void fetchSchedules(location, date, blood) async {
-    print('=== login_controoler fetchSchedules-func ===');
+    print('=== fetchSchedules-func ===');
     print('fetch ${location}');
     await request.getSchedule(location, date, blood).then((value) {
       if (value.statusCode == 200){

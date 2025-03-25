@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import '../models/reserved_model.dart';
+import '../models/my_reserved_model.dart';
 import '../services/api_service.dart';
 
-class ReservedController extends GetxController {
+class MyReservedController extends GetxController {
   var reservedList = <Reserved>[].obs;
   final isLoading = true.obs;
   ApiService request = ApiService();
