@@ -9,6 +9,6 @@
 -MUT University[bachelor's degree]
 
 
- ** to do **
+## to do 
 - show my reserve
 - SCH notification
