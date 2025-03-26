@@ -44,11 +44,11 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
+    print('=== login_controoler_LoginFunc ===');
+
     errorMessage.value = '';
     isLoading.value = true;
     bool isResponseReceived = false;
-
-    print('=== login_controoler ===');
 
     Future.delayed(Duration(seconds: 3), () {
       if (!isResponseReceived) {

@@ -1,33 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../controllers/my_reserved_controller.dart';
 import '../widgets/progress_bar.dart';
 import 'package:get/get.dart';
-import '../controllers/my_reserved_controller.dart';
+
 
 class MyReservedScreen extends StatelessWidget {
-  final reservedController = Get.put(MyReservedController());
+  final myReservedController = Get.put(MyReservedController());
+
+
+  String formatDate(String date) {
+    final parsedDate = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy').format(parsedDate);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.redAccent,
-        body:Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Text(
-                    'กำหนดการบริจาคโลหิต',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  'กำหนดการบริจาคโลหิตของคุณ',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-                Container(
+              ),
+              Obx(() {
+                final reservedData = myReservedController.reservedList;
+                if (myReservedController.isLoading.value) {
+                  return CircularProgressIndicator();
+                }
+                if (reservedData.isEmpty) {
+                  return Text(
+                    'ไม่มีกำหนดการบริจาคโลหิตที่จองไว้',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                    ),
+                  );
+                }
+                return Container(
                   alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.8,
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -45,25 +70,28 @@ class MyReservedScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 16),
                       Text(
-                        'บริจาควันที่: 12 มีนาคม 2564',
+                        'บริจาควันที่: ${formatDate(reservedData[0].reserveDonationDate)}',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      ProgressBar(),
+                      ProgressBar(donationdate: reservedData[0].reserveDonationDate),
 
                       SizedBox(height: 16,),
                       Text(
-                        'สถานที่: โรงพยาบาลสมเด็จพระเทพ',
+                        'สถานที่: ${reservedData[0].locationName}',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Text(
+                        '${reservedData[0].locationDetail}',
+                      ),
                       SizedBox(height: 16,),
                       Text(
-                        '08.00 - 12.00 น.',
+                        '${reservedData[0].scheduleStartTime} - ${reservedData[0].scheduleEndTime} น.',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -71,17 +99,9 @@ class MyReservedScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 16,),
                       Text(
-                        'รายละเอียด: บริจาคโลหิตเพื่อช่วยเหลือผู้ป่วยโรคเลือด',
+                        'รายละเอียด: ${reservedData[0].scheduleDetail}',
                       ),
 
-                      SizedBox(height: 16,),
-                      Text(
-                        'หมายเหตุ: กรุณามาถึงก่อนเวลาที่กำหนด 15 นาที',
-                      ),
-                      SizedBox(height: 16,),
-                      Text(
-                        'หากมีข้อสงสัยกรุณาติดต่อ โทร 1669',
-                      ),
 
                       SizedBox(height: 26,),
 
@@ -105,7 +125,8 @@ class MyReservedScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-
+                              myReservedController.cancelReserved(
+                                  reservedData[0].reserveId);
                             }
                         ),
                       ),
@@ -113,11 +134,12 @@ class MyReservedScreen extends StatelessWidget {
                     ],
                   ),
 
-                ),
-              ],
-            ),
-          )
-      );
+                );
+              }),
+            ],
+          ),
+        )
+    );
   }
 }
 

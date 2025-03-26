@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:get/get.dart';
 import 'authenthication_manager.dart';
 import 'package:dio/dio.dart'as DIO;
@@ -10,23 +9,47 @@ class ApiService {
     baseUrl: 'http://localhost/Blood_Donation-Web/',
   ));
 
-  Future<dynamic> getSchedule(String location,String date,bool blood) async {
-    _authManager.getMember();
-    final blood_value = blood? _authManager.member.value.memberBloodType:'';
+  Future<Map<String, dynamic>?> login(String email, String password) async {
+    print(' = api_service func login =');
+    DIO.Response response = await dio.post("/api/login.php", data: {
+      'member_email': email,
+      'member_password': password,
+    });
 
+    if (response.statusCode == 200) {
+      var result = json.decode(response.data);
+      print(result);
+
+      if(result['success'] == false) {
+        return null;
+      }else{
+        print(result['0']['member_id']);
+        return result;
+      }
+    }
+    print(' = api_service func login =');
+  }
+
+  Future<dynamic> getReserved(String mem_ID) async {
+    print(' = api_service func getReserved =');
     try {
-      var url = 'http://localhost/Blood_Donation-Web/api/schedule_list.php?location=$location&date=$date&blood=$blood_value';
-      print(url);
-      return await dio.get('/api/schedule_list.php?location=$location&date=$date&blood=$blood_value');
+       var url = 'http://localhost/Blood_Donation-Web/api/reserved_list.php?member_id=$mem_ID';
+       print(url);
+      return await dio.get('/api/reserved_list.php?member_id=$mem_ID');
     }
     catch (e) {
       print(e);
     }
   }
 
-  Future<dynamic> getReserved() async {
+  Future<dynamic> getSchedule(String location,String date,bool blood) async {
+    _authManager.getMember();
+    final blood_value = blood? _authManager.member.value.memberBloodType:'';
+
     try {
-      return await dio.get('/api/reserved_list.php');
+      // var url = 'http://localhost/Blood_Donation-Web/api/schedule_list.php?location=$location&date=$date&blood=$blood_value';
+      // print(url);
+      return await dio.get('/api/schedule_list.php?location=$location&date=$date&blood=$blood_value');
     }
     catch (e) {
       print(e);
@@ -90,29 +113,21 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>?> login(String email, String password) async {
-    print(' = api_service func login =');
-    DIO.Response response = await dio.post("/api/login.php", data: {
-        'member_email': email,
-        'member_password': password,
+
+  Future<dynamic> cancelReserved(String resID) async {
+
+      DIO.Response response = await dio.post("/api/cancel_reserve.php", data: {
+        'reserve_id': resID,
       });
 
       if (response.statusCode == 200) {
         var result = json.decode(response.data);
         print(result);
 
-        if(result['success'] == false) {
-          return null;
-        }else{
-          print(result['0']['member_id']);
-          return result;
-        }
+        return result;
       }
-    print(' = api_service func login =');
+
   }
-
-
-
 
 
 }

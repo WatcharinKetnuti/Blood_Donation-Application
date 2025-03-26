@@ -2,6 +2,7 @@ import 'package:blood_donation_application/controllers/reserve_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../controllers/my_reserved_controller.dart';
 import '../controllers/schedule_controller.dart';
 import '../models/schedule_model.dart';
 import '../services/authenthication_manager.dart';
@@ -9,9 +10,7 @@ import '../services/authenthication_manager.dart';
 class ScheduleDetail extends StatelessWidget {
   final Schedule schedule;
   final reserveController = Get.put (ReserveController());
-  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-
-
+  final myReservedController = Get.put(MyReservedController());
    ScheduleDetail({Key? key, required this.schedule}) : super(key: key);
 
   @override
@@ -90,7 +89,9 @@ class ScheduleDetail extends StatelessWidget {
                 onPressed: () {
                   if (reserveController.formKey.currentState!.validate()) {
                     reserveController.scheduleId = schedule.scheduleId;
-                    reserveController.reserve();
+                    reserveController.reserve().then((_) {
+                     myReservedController.fetchReserved();
+                    });
                   }
                 },
                 style: ElevatedButton.styleFrom(

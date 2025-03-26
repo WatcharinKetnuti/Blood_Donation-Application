@@ -64,22 +64,4 @@ class ScheduleController extends GetxController {
 
   }
 
-  // void Filter() async {
-  //   print('=== login_controoler Filter-func ===');
-  //
-  //
-  //   var response = await apiService.login(email.text, password.text);
-  //   isResponseReceived = true;
-  //   print(response);
-  //
-  //   if (response != null) {
-  //     box.write('member', response['0']);
-  //     Get.snackbar('Success', 'Login successful');
-  //     _authManager.login(response['token']);
-  //     Get.offAll(() => AuthenScreen());
-  //   } else {
-  //     errorMessage.value = 'อีเมล หรือ รหัสผ่านไม่ถูกต้อง';
-  //   }
-  //   isLoading.value = false;
-  // }
 }

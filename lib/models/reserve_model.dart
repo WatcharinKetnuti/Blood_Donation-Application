@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<Reserve> locationFromJson(String str) => List<Reserve>.from(json.decode(str).map((x) => Reserve.fromJson(x)));

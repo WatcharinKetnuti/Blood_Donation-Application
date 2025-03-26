@@ -1,4 +1,3 @@
-import 'package:blood_donation_application/controllers/login_controller.dart';
 import 'package:blood_donation_application/controllers/schedule_controller.dart';
 import 'package:blood_donation_application/models/location_model.dart';
 import 'package:blood_donation_application/screens/scheduledetail_screen.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 
 
 class ScheduleListScreen extends StatelessWidget {

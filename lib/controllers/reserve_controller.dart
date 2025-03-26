@@ -2,8 +2,6 @@ import 'package:blood_donation_application/services/cache_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../models/member_model.dart';
 import '../models/reserve_model.dart';
 import '../services/api_service.dart';
 import '../services/authenthication_manager.dart';
@@ -17,8 +15,6 @@ class ReserveController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
   final donationDate = TextEditingController();
-  final reserveDate = DateTime.now();
-  final reserveStatus = 'W';
   late String scheduleId;
 
 

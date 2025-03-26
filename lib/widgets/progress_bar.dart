@@ -4,12 +4,21 @@ import 'package:get/get.dart';
 
 
 class ProgressBar extends StatelessWidget {
-  var progressPercentage = 10.0.obs;
+  var progressPercentage = 0.0.obs;
+
+  final donationdate;
+
+  ProgressBar({super.key, required this.donationdate,});
 
   @override
   Widget build(BuildContext context) {
     return
       Obx(() {
+        final DateNow = DateTime.now();
+        final DateDonation = DateTime.parse(donationdate);
+        final difference = 1+DateDonation.difference(DateNow).inDays;
+
+        progressPercentage.value = (difference == 0) ? 100 : (difference / 60) * 100;
         return ArcProgressBar(
           percentage: progressPercentage.value,
           arcThickness: 25,
@@ -20,9 +29,10 @@ class ProgressBar extends StatelessWidget {
           backgroundColor: Colors.red.shade100,
           bottomCenterWidget: Column(
             children: [
-              const Text("อีก"),
-              Text('${progressPercentage.value}วัน'),
-              const Text(""),
+              const Text(
+                  "อีก"
+              ),
+              Text('${difference}วัน'),
             ],
           ),
         );
