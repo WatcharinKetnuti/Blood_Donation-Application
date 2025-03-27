@@ -1,6 +1,7 @@
 import 'package:arc_progress_bar_new/arc_progress_bar_new.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 
 class ProgressBar extends StatelessWidget {
@@ -14,11 +15,17 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       Obx(() {
-        final DateNow = DateTime.now();
-        final DateDonation = DateTime.parse(donationdate);
-        final difference = 1+DateDonation.difference(DateNow).inDays;
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        final DateTime DateNow = formatter.parse(DateTime.now().toString());
+        final DateTime DateDonation = formatter.parse(donationdate);
+        final int difference = DateDonation.difference(DateNow).inDays;
 
-        progressPercentage.value = (difference == 0) ? 100 : (difference / 60) * 100;
+        if (difference <= 0) {
+          progressPercentage.value = 100.0;
+        } else {
+          progressPercentage.value = (1 - (difference / 60)) * 100;
+          progressPercentage.value = progressPercentage.value.clamp(0.0, 100.0);
+        }
         return ArcProgressBar(
           percentage: progressPercentage.value,
           arcThickness: 25,
@@ -32,7 +39,7 @@ class ProgressBar extends StatelessWidget {
               const Text(
                   "อีก"
               ),
-              Text('${difference}วัน'),
+              Text('${difference} วัน'),
             ],
           ),
         );

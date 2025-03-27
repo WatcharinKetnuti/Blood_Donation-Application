@@ -45,10 +45,11 @@ class ApiService {
   Future<dynamic> getSchedule(String location,String date,bool blood) async {
     _authManager.getMember();
     final blood_value = blood? _authManager.member.value.memberBloodType:'';
+    print('blood: $blood_value');
 
+    var url = 'http://localhost/Blood_Donation-Web/api/schedule_list.php?location=$location&date=$date&blood=$blood_value';
+    print(url);
     try {
-      // var url = 'http://localhost/Blood_Donation-Web/api/schedule_list.php?location=$location&date=$date&blood=$blood_value';
-      // print(url);
       return await dio.get('/api/schedule_list.php?location=$location&date=$date&blood=$blood_value');
     }
     catch (e) {

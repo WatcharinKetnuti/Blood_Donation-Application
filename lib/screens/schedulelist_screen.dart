@@ -5,11 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import '../controllers/reserve_controller.dart';
 
 
 class ScheduleListScreen extends StatelessWidget {
   final scheduleController = Get.put(ScheduleController());
+  final reserveController = Get.put (ReserveController());
   String formatDate(String date) {
     final parsedDate = DateTime.parse(date);
     return DateFormat('dd/MM/yyyy').format(parsedDate);
@@ -221,7 +222,9 @@ class ScheduleListScreen extends StatelessWidget {
                                 builder: (context) => ScheduleDetail(
                                   schedule: scheduleController.scheduleList[index],
                                 ),
-                              );
+                              ).whenComplete(() {
+                                  reserveController.donationDate.text = '';
+                              });
                             }),
                       );
                     });

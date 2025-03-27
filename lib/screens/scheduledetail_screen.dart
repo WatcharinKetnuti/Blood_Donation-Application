@@ -91,6 +91,7 @@ class ScheduleDetail extends StatelessWidget {
                     reserveController.scheduleId = schedule.scheduleId;
                     reserveController.reserve().then((_) {
                      myReservedController.fetchReserved();
+                     Navigator.of(context).pop();
                     });
                   }
                 },
