@@ -3,12 +3,13 @@
 -MUT University[bachelor's degree]
 
 WIP 
-![](https://us-central1-progress-markdown.cloudfunctions.net/progress/80)
+![](https://us-central1-progress-markdown.cloudfunctions.net/progress/90)
 
 
 
 
 
 ## to do 
-- show my reserve
+- improve show my reserve
+- error check
 - SCH notification
