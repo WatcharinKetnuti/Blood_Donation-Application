@@ -15,14 +15,12 @@ class RegisterScreen extends StatelessWidget {
             elevation: 8,
             child: Container(
               padding: const EdgeInsets.all(32.0),
-              constraints: MediaQuery.of(context).size.width > 600
-                  ? const BoxConstraints(maxWidth: 450)
-                  : const BoxConstraints(maxWidth: 350),
+              height: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.width * 0.8,
               child: SingleChildScrollView(
                 child: Form(
                   key: registerController.formKey,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const FlutterLogo(size: 100),

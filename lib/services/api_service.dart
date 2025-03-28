@@ -4,9 +4,11 @@ import 'authenthication_manager.dart';
 import 'package:dio/dio.dart'as DIO;
 
 class ApiService {
+  // 10.0.2.2 android localhost
+
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
   final dio = DIO.Dio(DIO.BaseOptions(
-    baseUrl: 'http://localhost/Blood_Donation-Web/',
+    baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
   ));
 
   Future<Map<String, dynamic>?> login(String email, String password) async {

@@ -48,7 +48,7 @@ class ScheduleDetail extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 200,
+              height: 180,
               child: Text(
                 "\t\t ${schedule.scheduleDetail}",
                 style: TextStyle(fontSize: 16),

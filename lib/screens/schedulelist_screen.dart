@@ -28,7 +28,7 @@ class ScheduleListScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title:   Text(
-          'กำหนดการบริจาคโลหิตที่เปิดจอง',
+          'กำหนดการที่เปิดจอง',
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.bold,
@@ -168,66 +168,63 @@ class ScheduleListScreen extends StatelessWidget {
             }
             else{
               return
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: scheduleController.scheduleList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin:
-                        EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(1),
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 16.0),
-                            leading: Icon(
-                              Icons.calendar_today_outlined,
-                              color: Colors.black54,
-                              size: 30.0,
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: scheduleController.scheduleList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 9.0, horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(1),
+                              borderRadius: BorderRadius.circular(15.0),
                             ),
-                            title: Text(
-                              "${scheduleController.scheduleList[index].locationName}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22.0,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            subtitle: Text(
-                              " ${formatDate(scheduleController.scheduleList[index].scheduleStartDate)} - ${formatDate(scheduleController.scheduleList[index].scheduleEndDate)} \n"
-                                  " ${formatTime(scheduleController.scheduleList[index].scheduleStartTime)} - ${formatTime(scheduleController.scheduleList[index].scheduleEndTime)} \n",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            trailing: Text(
-                              "จำนวนที่รับ: ${scheduleController.scheduleList[index].scheduleMax} คน\n"
-                                  "หมู่เลือด: ${scheduleController.scheduleList[index].scheduleBloodType == "" ? "ไม่ระบุ" : scheduleController.scheduleList[index].scheduleBloodType} \n",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black54,
-                              ),
-                              textAlign: TextAlign.right,
-                            ),
-                            onTap: () {
-                              showModalBottomSheet(
-                                constraints: BoxConstraints(
-                                  maxHeight:
-                                  MediaQuery.of(context).size.height * 0.8,
-                                ),
-                                context: context,
-                                builder: (context) => ScheduleDetail(
-                                  schedule: scheduleController.scheduleList[index],
-                                ),
-                              ).whenComplete(() {
-                                  reserveController.donationDate.text = '';
-                              });
-                            }),
-                      );
-                    });
+                              child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+                                  title: Text(
+                                    "${scheduleController.scheduleList[index].locationName}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    " ${formatDate(scheduleController.scheduleList[index].scheduleStartDate)} - ${formatDate(scheduleController.scheduleList[index].scheduleEndDate)} \n"
+                                        " ${formatTime(scheduleController.scheduleList[index].scheduleStartTime)} - ${formatTime(scheduleController.scheduleList[index].scheduleEndTime)} \n",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                        "หมู่เลือด: ${scheduleController.scheduleList[index].scheduleBloodType == "" ? "ไม่ระบุ" : scheduleController.scheduleList[index].scheduleBloodType} \n",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black54,
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      constraints: BoxConstraints(
+                                        maxHeight:
+                                        MediaQuery.of(context).size.height * 0.8,
+                                      ),
+                                      context: context,
+                                      builder: (context) => ScheduleDetail(
+                                        schedule: scheduleController.scheduleList[index],
+                                      ),
+                                    ).whenComplete(() {
+                                        reserveController.donationDate.text = '';
+                                    });
+                                  }),
+                          );
+                        }),
+                  ),
+                );
             }
           }),
         ],
