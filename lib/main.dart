@@ -17,7 +17,7 @@ import 'services/authenthication_manager.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 ApiService request = ApiService();
 final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-final mem = _authManager.member.value.memberID;
+final mem = _authManager.member.value;
 final notificationController = Get.put(NotificationController());
 
 void startNotificationTimer() {
@@ -34,9 +34,9 @@ void startNotificationTimer() {
 
     print('Triggering notification at ${DateTime.now()}');
 
-    if (mem != '') {
+    if (mem.memberID != '') {
       notificationController.fetchReserved();
-      var data = notificationController.reservedForNotification;
+      final data = notificationController.reservedForNotification;
       if(data.isNotEmpty) {
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         final DateTime DateNow = formatter.parse(DateTime.now().toString());
@@ -48,8 +48,20 @@ void startNotificationTimer() {
         }
         await flutterLocalNotificationsPlugin.show(
           0,
-          'แจ้งเตื่องการบริจาคเลือด',
+          'แจ้งเตือนการบริจาคเลือด',
           '$detail',
+          notificationDetails,
+        );
+      }
+
+      notificationController.fetchSchedules('','', true);
+      final data2 = notificationController.scheduleListForNotification;
+      print('data2: ${data2.length}');
+      if(data2.isNotEmpty) {
+        await flutterLocalNotificationsPlugin.show(
+          1,
+          'แจ้งเตื่อนกำหนดการบริจาคเลือด',
+          'มีกำหนดการบริจาคที่สามารถจองได้ และกรุ๊ปเลือดตรงกับคุณ ${data2.length} รายการ',
           notificationDetails,
         );
       }
