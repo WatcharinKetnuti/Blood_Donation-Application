@@ -32,17 +32,18 @@ class ApiService {
     print(' = api_service func login =');
   }
 
-  Future<dynamic> getReserved(String mem_ID) async {
+  Future<dynamic> getReserved(String mem_ID, bool noti) async {
     print(' = api_service func getReserved =');
     try {
-       var url = 'http://localhost/Blood_Donation-Web/api/reserved_list.php?member_id=$mem_ID';
+       var url = 'http://localhost/Blood_Donation-Web/api/reserved_list.php?member_id=$mem_ID&?noti=$noti';
        print(url);
-      return await dio.get('/api/reserved_list.php?member_id=$mem_ID');
+      return await dio.get('/api/reserved_list.php?member_id=$mem_ID&?noti=$noti');
     }
     catch (e) {
       print(e);
     }
   }
+
 
   Future<dynamic> getSchedule(String location,String date,bool blood) async {
     _authManager.getMember();

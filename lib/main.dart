@@ -1,141 +1,102 @@
-import 'package:blood_donation_application/services/authenthication_manager.dart';
+import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'controllers/my_reserved_controller.dart';
+import 'controllers/notification_controller.dart';
+import 'screens/authen_screen.dart';
+import 'services/api_service.dart';
+import 'services/authenthication_manager.dart';
 
-import 'package:blood_donation_application/screens/authen_screen.dart';
-void main() async {
-  await GetStorage.init();
-  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-  if (_authManager.member.value != null) {
-      WidgetsFlutterBinding.ensureInitialized();
-      initializeNotifications();
-      registerBackgroundTasks();
-  }
-  runApp(GetMaterialApp(
-    title: "Blood Donation Application",
-    home: AuthenScreen() ,
-  ));
-}
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+ApiService request = ApiService();
+final AuthenticationManager _authManager = Get.put(AuthenticationManager());
+final mem = _authManager.member.value.memberID;
+final notificationController = Get.put(NotificationController());
 
-// Notification setup
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+void startNotificationTimer() {
+  const Duration interval = Duration(seconds: 10);
+  Timer.periodic(interval, (Timer timer) async {
+    const AndroidNotificationDetails androidDetails =
+    AndroidNotificationDetails('', 'blood_donation_channel',
+      channelDescription: 'Blood Donation Notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
 
-// Dio instance
-final Dio dio = Dio(BaseOptions(
-  baseUrl: 'http://localhost/Blood_Donation-Web/',
-));
+    const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
-Future<void> initializeNotifications() async {
-  tz.initializeTimeZones();
+    print('Triggering notification at ${DateTime.now()}');
 
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  final InitializationSettings initializationSettings =
-  InitializationSettings(android: initializationSettingsAndroid);
-
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-}
-
-void registerBackgroundTasks() {
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: false,
-  );
-
-  // Schedule daily check at 6 AM
-  Workmanager().registerPeriodicTask(
-    "birthdayCheck",
-    "birthdayCheckTask",
-    frequency: const Duration(hours: 24),
-    initialDelay: Duration(seconds: 10),
-    constraints: Constraints(
-      networkType: NetworkType.connected,
-    ),
-  );
-}
-
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    if (task == "birthdayCheckTask") {
-      await checkBirthdaysAndNotify();
+    if (mem != '') {
+      notificationController.fetchReserved();
+      var data = notificationController.reservedForNotification;
+      if(data.isNotEmpty) {
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        final DateTime DateNow = formatter.parse(DateTime.now().toString());
+        final DateTime DateDonation = formatter.parse(data[0].reserveDonationDate);
+        final int difference = DateDonation.difference(DateNow).inDays;
+        var detail = "วันบริจาคเลือดของคุณ ${data[0].reserveDonationDate} อีก ${difference} วัน";
+        if(difference == 0) {
+          detail = "วันนี้คุณมีนัดบริจาคเลือด";
+        }
+        await flutterLocalNotificationsPlugin.show(
+          0,
+          'แจ้งเตื่องการบริจาคเลือด',
+          '$detail',
+          notificationDetails,
+        );
+      }
     }
-    return Future.value(true);
+
   });
 }
 
-Future<void> checkBirthdaysAndNotify() async {
-  final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-  final member_id = _authManager.member.value.memberID;
-  var url = 'http://localhost/Blood_Donation-Web/api/noti_donation?member_id=$member_id';
-  print(url);
-  try {
-    final response = await dio.get('/api/noti_donation?member_id=$member_id',);
+void main() async {
+  print('= main.dart =');
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
+  await GetStorage.init();
 
-    if (response.statusCode == 200) {
-      final List<dynamic> notidata = response.data;
+  tz.initializeTimeZones();
 
-      if (notidata.isNotEmpty) {
-        await showBirthdayNotification(notidata);
-      }
+
+  // Initialize local notifications
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Request notification permissions for Android 13+
+  final androidPlugin = flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+  if (androidPlugin != null) {
+    final isEnabled = await androidPlugin.areNotificationsEnabled();
+    if (isEnabled != null && !isEnabled) {
+      await androidPlugin.requestNotificationsPermission();
     }
-  } catch (e) {
-    print('Unexpected error checking : $e');
-  }
-}
-
-Future<void> showBirthdayNotification(List<dynamic> notidata) async {
-  const AndroidNotificationDetails androidPlatformChannelSpecifics =
-  AndroidNotificationDetails(
-    'birthday_channel',
-    'Birthday Notifications',
-    importance: Importance.high,
-    priority: Priority.high,
-    showWhen: false,
-  );
-
-  const NotificationDetails platformChannelSpecifics =
-  NotificationDetails(android: androidPlatformChannelSpecifics);
-
-  String message = notidata.length == 1
-      ? '${notidata[0]['name']} has a birthday coming up!'
-      : '${notidata.length} people have birthdays coming up!';
-
-  await flutterLocalNotificationsPlugin.zonedSchedule(
-    0,
-    'Upcoming Birthdays',
-    message,
-    _nextInstanceOfSixAM(),
-    platformChannelSpecifics,
-    androidScheduleMode: AndroidScheduleMode.exact,
-    uiLocalNotificationDateInterpretation:
-    UILocalNotificationDateInterpretation.absoluteTime,
-  );
-}
-
-tz.TZDateTime _nextInstanceOfSixAM() {
-  final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-  tz.TZDateTime scheduledDate = tz.TZDateTime(
-    tz.local,
-    now.year,
-    now.month,
-    now.day,
-    6,
-  );
-
-  if (scheduledDate.isBefore(now)) {
-    scheduledDate = scheduledDate.add(const Duration(days: 1));
   }
 
-  return scheduledDate;
+  // Debugging: Log if notifications are enabled
+  print('Notifications enabled: ${await androidPlugin?.areNotificationsEnabled()}');
+
+  // Start the notification timer
+  startNotificationTimer();
+
+  runApp(GetMaterialApp(
+    title: "Blood Donation Application",
+    home: AuthenScreen(),
+  ));
 }
+
+
 
 
 

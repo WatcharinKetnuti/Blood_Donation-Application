@@ -18,6 +18,16 @@ class AuthenticationManager extends GetxController with CacheManager {
   void logOut() {
     isLogged.value = false;
     removeToken();
+    member.value = Member(
+      memberID: '',
+      memberFname: '',
+      memberLname: '',
+      memberBirthDate: DateTime.now(),
+      memberTel: '',
+      memberBloodType: '',
+      memberEmail: '',
+      memberPassword: '',
+    );
   }
 
   void login(String? token) async {

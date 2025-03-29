@@ -20,7 +20,8 @@ class MyReservedController extends GetxController {
   void fetchReserved() async {
     print('=== fetchReserved-func ===');
     final memID = _authManager.member.value.memberID;
-      await request.getReserved(memID).then((value) {
+    final noti = false;
+      await request.getReserved(memID,noti).then((value) {
         if (value.statusCode == 200) {
           reservedList.value = reservedFromJson(value.data);
           isLoading.value = false;
