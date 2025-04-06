@@ -37,7 +37,7 @@ class ScheduleListScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(CupertinoIcons.arrow_up_bin_fill), // Icon on the top-right corner
+            icon: Icon(CupertinoIcons.bin_xmark_fill), // Icon on the top-right corner
             onPressed: () {
               scheduleController.location.text = '';
               scheduleController.blood.value = false;

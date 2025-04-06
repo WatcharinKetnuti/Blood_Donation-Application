@@ -70,13 +70,14 @@ void startNotificationTimer() {
   });
 }
 
+
+
 void main() async {
   print('= main.dart =');
   WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
   await GetStorage.init();
 
   tz.initializeTimeZones();
-
 
   // Initialize local notifications
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -96,10 +97,6 @@ void main() async {
     }
   }
 
-  // Debugging: Log if notifications are enabled
-  print('Notifications enabled: ${await androidPlugin?.areNotificationsEnabled()}');
-
-  // Start the notification timer
   startNotificationTimer();
 
   runApp(GetMaterialApp(
