@@ -11,7 +11,7 @@ class ApiService {
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
   final dio = DIO.Dio(DIO.BaseOptions(
     baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
-    //baseUrl: 'http://localhost/Blood_Donation-Web/',
+   // baseUrl: 'http://localhost/Blood_Donation-Web/',
   ));
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
@@ -37,9 +37,9 @@ class ApiService {
 
   Future<dynamic> getReserved(String mem_ID, bool noti) async {
     print(' = api_service func getReserved =');
+    var url = 'http://localhost/Blood_Donation-Web/api/reserved_list.php?member_id=$mem_ID&noti=$noti';
+    print(url);
     try {
-       var url = 'http://localhost/Blood_Donation-Web/api/reserved_list.php?member_id=$mem_ID&?noti=$noti';
-       print(url);
       return await dio.get('/api/reserved_list.php?member_id=$mem_ID&?noti=$noti');
     }
     catch (e) {

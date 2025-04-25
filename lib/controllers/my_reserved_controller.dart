@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import '../models/my_reserved_model.dart';
 import '../services/api_service.dart';
@@ -23,6 +24,7 @@ class MyReservedController extends GetxController {
     final noti = false;
       await request.getReserved(memID,noti).then((value) {
         if (value.statusCode == 200) {
+          print('fetchReserved: ${value.data}');
           reservedList.value = reservedFromJson(value.data);
           isLoading.value = false;
         } else {
@@ -31,7 +33,7 @@ class MyReservedController extends GetxController {
     }).catchError((onError) {
       printError();
     });
-      print(reservedList.length);
+      print('reservedList: ${reservedList.length}');
      print('=== fetchReserved-func ===');
   }
 

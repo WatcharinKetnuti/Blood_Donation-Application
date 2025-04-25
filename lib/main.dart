@@ -33,29 +33,33 @@ void startNotificationTimer() {
     const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
     print('Triggering notification at ${DateTime.now()}');
+    print('memberID: ${mem.memberID}');
 
     if (mem.memberID != '') {
       notificationController.fetchReserved();
-      final data = notificationController.reservedForNotification;
+      var data = notificationController.reservedForNotification;
       if(data.isNotEmpty) {
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         final DateTime DateNow = formatter.parse(DateTime.now().toString());
         final DateTime DateDonation = formatter.parse(data[0].reserveDonationDate);
         final int difference = DateDonation.difference(DateNow).inDays;
-        var detail = "วันบริจาคเลือดของคุณ ${data[0].reserveDonationDate} อีก ${difference} วัน";
-        if(difference == 0) {
-          detail = "วันนี้คุณมีนัดบริจาคเลือด";
-        }
-        await flutterLocalNotificationsPlugin.show(
-          0,
-          'แจ้งเตือนการบริจาคเลือด',
-          '$detail',
-          notificationDetails,
-        );
+        if(difference <= 3)
+          {
+            var detail = "วันบริจาคเลือดของคุณ ${data[0].reserveDonationDate} อีก ${difference} วัน";
+            if(difference == 0) {
+              detail = "วันนี้คุณมีนัดบริจาคเลือด";
+            }
+            await flutterLocalNotificationsPlugin.show(
+              0,
+              'แจ้งเตือนการบริจาคเลือด',
+              '$detail',
+              notificationDetails,
+            );
+          }
       }
 
       notificationController.fetchSchedules('','', true);
-      final data2 = notificationController.scheduleListForNotification;
+      var data2 = notificationController.scheduleListForNotification;
       print('data2: ${data2.length}');
       if(data2.isNotEmpty) {
         await flutterLocalNotificationsPlugin.show(

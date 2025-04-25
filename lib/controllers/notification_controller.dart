@@ -18,16 +18,14 @@ class NotificationController extends GetxController {
   void fetchReserved() async {
     print('=== fetchReserved-func ===');
     final memID = _authManager.member.value.memberID;
-    final noti = true;
-    await request.getReserved(memID,noti).then((value) {
+    await request.getReserved(memID,true).then((value) {
       if (value.statusCode == 200) {
         reservedForNotification.value = reservedFromJson(value.data);
+        print('Noti reserve: ${reservedForNotification.length}');
       }
     }).catchError((onError) {
       printError();
     });
-    print(reservedForNotification.length);
-    print('=== fetchReserved-func ===');
   }
 
   void fetchSchedules(location, date, blood) async {
