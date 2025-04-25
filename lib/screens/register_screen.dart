@@ -131,6 +131,28 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                       _gap(),
+                      TextFormField(
+                        controller: registerController.cardID,
+                        validator: registerController.validateCardID,
+                        decoration: const InputDecoration(
+                          labelText: 'หมายเลขบัตรประชาชน',
+                          hintText: 'กรอกหมายเลขบัตรประชาชน',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
+                      TextFormField(
+                        controller: registerController.address,
+                        validator: registerController.validateAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'ที่อยู่',
+                          hintText: 'กรอกที่อยู่ของคุณ',
+                          prefixIcon: Icon(Icons.email_outlined),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      _gap(),
                       DropdownButtonFormField<String>(
                         value: registerController.bloodType.text = 'A',
                         items: <String>['A', 'B', 'AB', 'O']
@@ -150,6 +172,15 @@ class RegisterScreen extends StatelessWidget {
                           registerController.bloodType.text = newValue!;
                         },
                       ),
+
+                  Obx(() => registerController.errorMessage.value.isNotEmpty
+                      ? Text(
+                        registerController.errorMessage.value,
+                        style: TextStyle(color: Colors.red),
+                      )
+                      : SizedBox()
+                  ),
+                      _gap(),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -175,6 +206,7 @@ class RegisterScreen extends StatelessWidget {
                           },
                         ),
                       ),
+                      _gap(),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -200,12 +232,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                       _gap(),
-                      Obx(() => registerController.errorMessage.value.isNotEmpty
-                          ? Text(
-                              registerController.errorMessage.value,
-                              style: TextStyle(color: Colors.red),
-                            )
-                          : SizedBox()),
+
                     ],
                   ),
                 ),

@@ -20,6 +20,8 @@ class RegisterController extends GetxController {
   // final  confirmPassword = TextEditingController();
   // final  birthdate = TextEditingController();
   // final  tel = TextEditingController();
+  // final cardID = TextEditingController();
+  // final address = TextEditingController();
   final  bloodType = TextEditingController();
 
   final firstName = TextEditingController(text: 'Default First Name');
@@ -29,7 +31,9 @@ class RegisterController extends GetxController {
   final confirmPassword = TextEditingController(text: 'defaultpassword');
   final birthdate = TextEditingController(text: '2000-01-01');
   final tel = TextEditingController(text: '0123456789');
-  //final bloodType = TextEditingController(text: 'A');
+  final cardID = TextEditingController(text: '1234567890123');
+  final address = TextEditingController(text: '123 Default St, City, Country');
+
 
 
 
@@ -97,6 +101,22 @@ class RegisterController extends GetxController {
     return null;
   }
 
+  String? validateCardID(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Card ID is required';
+    } else if (!RegExp(r'^[0-9]{13}$').hasMatch(value)) {
+      return 'Enter a valid 13-digit card ID';
+    }
+    return null;
+  }
+
+  String? validateAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Address is required';
+    }
+    return null;
+  }
+
 
 
   Future<void> register() async {
@@ -110,8 +130,11 @@ class RegisterController extends GetxController {
       memberPassword: password.text,
       memberBirthDate: DateTime.parse(birthdate.text),
       memberTel: tel.text,
+      memberCardID: cardID.text,
+      memberAddress: address.text,
       memberBloodType: bloodType.text,
     );
+
     try {
       await api.insertMember(member.toJson());
     } catch (e) {

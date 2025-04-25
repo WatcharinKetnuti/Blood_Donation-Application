@@ -35,10 +35,6 @@ class ScheduleDetail extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'รับ: ${schedule.scheduleMax} คน',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
               'หมู่เลือด: ${schedule.scheduleBloodType == '' ? 'ไม่ระบุ' : schedule.scheduleBloodType}',
               style: TextStyle(fontSize: 18),
             ),

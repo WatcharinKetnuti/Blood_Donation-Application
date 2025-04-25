@@ -18,7 +18,6 @@ class ScheduleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     refresh();
   }
 
@@ -35,7 +34,9 @@ class ScheduleController extends GetxController {
 
   void fetchSchedules(location, date, blood) async {
     print('=== fetchSchedules-func ===');
-    print('fetch ${location}');
+
+    //print('filter: ${location, date, blood}');
+
     await request.getSchedule(location, date, blood).then((value) {
       if (value.statusCode == 200){
         scheduleList.value = scheduleListFromJson(value.data);
@@ -43,6 +44,7 @@ class ScheduleController extends GetxController {
       }else{
         isLoading.value = true;
       }
+      print('value: ${value.data}');
     }).catchError((onError){
       printError();
     });

@@ -12,6 +12,8 @@ class Member {
   final String memberLname;
   final DateTime memberBirthDate;
   final String memberTel;
+  final String memberCardID;
+  final String memberAddress;
   final String memberBloodType;
   final String memberEmail;
   final String memberPassword;
@@ -22,6 +24,8 @@ class Member {
     required this.memberLname,
     required this.memberBirthDate,
     required this.memberTel,
+    required this.memberCardID,
+    required this.memberAddress,
     required this.memberBloodType,
     required this.memberEmail,
     required this.memberPassword,
@@ -34,6 +38,8 @@ class Member {
       memberLname: json['member_lname'],
       memberBirthDate: DateTime.parse(json['member_birth_date']),
       memberTel: json['member_tel'],
+      memberCardID: json['member_cardID'],
+      memberAddress: json['member_address'],
       memberBloodType: json['member_blood_type'],
       memberEmail: json['member_email'],
       memberPassword: json['member_password'],
@@ -47,6 +53,8 @@ class Member {
       'member_lname': memberLname,
       'member_birth_date': memberBirthDate.toIso8601String(),
       'member_tel': memberTel,
+      'member_cardID': memberCardID,
+      'member_address': memberAddress,
       'member_blood_type': memberBloodType,
       'member_email': memberEmail,
       'member_password': memberPassword,

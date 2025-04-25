@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 
 import '../services/authenthication_manager.dart';
 import 'authen_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
+  String formatDate(String date) {
+    final parsedDate = DateTime.parse(date);
+    return DateFormat('dd/MM/yyyy').format(parsedDate);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Icon(CupertinoIcons.calendar, color: Colors.grey),
                     SizedBox(width: 8),
-                    Text(member.memberBirthDate.toString() ),
+                    Text(formatDate(member.memberBirthDate.toString()) ),
                   ],
                 ),
                 SizedBox(height: 16),
