@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../controllers/reserve_controller.dart';
+import 'package:dropdown_search/dropdown_search.dart'; 
 
 class ScheduleListScreen extends StatelessWidget {
   final scheduleController = Get.put(ScheduleController());
@@ -132,33 +133,46 @@ class ScheduleListScreen extends StatelessWidget {
                       Row(
                         children: [
                           Obx(() {
-                            if (scheduleController.isLoading.value) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            return Expanded(
-                              child: DropdownButtonFormField<String>(
-                                items: scheduleController.locationList
-                                    .map((Location value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value.locationName,
-                                    child: Text(value.locationName),
-                                  );
-                                }).toList(),
-                                decoration: const InputDecoration(
-                                  hintText: 'สถานที่',
-                                  prefixIcon: Icon(Icons.location_on_outlined),
-                                  border: OutlineInputBorder(),
+                              if (scheduleController.isLoading.value) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+                              return Expanded(
+                                child: DropdownSearch<String>(
+                                  popupProps: PopupProps.menu(
+                                    showSearchBox: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        hintText: "ค้นหาสถานที่",
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      ),
+                                    ),
+                                    menuProps: MenuProps(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  items: scheduleController.locationList
+                                      .map((Location location) => location.locationName)
+                                      .toList(),
+                                  dropdownDecoratorProps: DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      hintText: 'สถานที่',
+                                      prefixIcon: Icon(Icons.location_on_outlined),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      scheduleController.location.text = newValue;
+                                      scheduleController.fetchSchedules(
+                                          scheduleController.location.text,
+                                          scheduleController.date.text,
+                                          scheduleController.blood.value);
+                                    }
+                                  },
                                 ),
-                                onChanged: (String? newValue) {
-                                  scheduleController.location.text = newValue!;
-                                  scheduleController.fetchSchedules(
-                                      scheduleController.location.text,
-                                      scheduleController.date.text,
-                                      scheduleController.blood.value);
-                                },
-                              ),
-                            );
-                          }),
+                              );
+                            }),
                         ],
                       ),
                     ],

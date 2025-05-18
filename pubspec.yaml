@@ -45,6 +45,7 @@ dependencies:
   arc_progress_bar_new: ^1.0.4
   workmanager: ^0.5.1
   timezone: ^0.9.1
+  dropdown_search: ^5.0.6
 
 #  sqflite: ^2.4.1
 #  path: ^1.8.3

@@ -21,7 +21,7 @@ class ReserveController extends GetxController {
 
   String? validateDonationdate(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Donationdate is required';
+      return 'กรุณาเลือกวันที่บริจาคเลือดทีท่านต้องการ';
     }
     return null;
   }
