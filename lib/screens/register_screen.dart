@@ -58,7 +58,7 @@ class RegisterScreen extends StatelessWidget {
                         decoration: const InputDecoration(
                           labelText: 'นามสกุล',
                           hintText: 'กรอกนามสกุลของคุณ',
-                          prefixIcon: Icon(Icons.email_outlined),
+                            prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
                         ),
                       ),

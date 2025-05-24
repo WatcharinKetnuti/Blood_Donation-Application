@@ -10,8 +10,8 @@ class ApiService {
 
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
   final dio = DIO.Dio(DIO.BaseOptions(
-    baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
-   // baseUrl: 'http://localhost/Blood_Donation-Web/',
+   // baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
+   baseUrl: 'http://localhost/Blood_Donation-Web/',
   ));
 
   Future<Map<String, dynamic>?> login(String email, String password) async {
@@ -143,6 +143,17 @@ class ApiService {
         return result;
       }
 
+  }
+
+  Future<dynamic> getDonationHistory(String memberId) async {
+    try {
+      // var url = 'http://localhost/Blood_Donation-Web/api/donation_history_list.php?memberid=$memberId';
+      // print(url);
+      return await dio.get('/api/donation_history_list.php?memberid=$memberId');
+
+    } catch (e) {
+      throw Exception('Failed to load donation history: $e');
+    }
   }
 
 

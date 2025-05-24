@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:intl/intl.dart';
 
 List<Reserved> reservedFromJson(String str) => List<Reserved>.from(json.decode(str).map((x) => Reserved.fromJson(x)));

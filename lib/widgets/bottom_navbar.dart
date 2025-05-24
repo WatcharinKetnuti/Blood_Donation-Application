@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:blood_donation_application/screens/schedulelist_screen.dart';
 import 'package:blood_donation_application/screens/login_screen.dart';
-
+import '../screens/donation-history_screen.dart';
 import '../screens/profile_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -14,7 +14,12 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _pageIndex = 0;
-  final List<Widget> _page =[ScheduleListScreen(), MyReservedScreen(), ProfileScreen()];
+  final List<Widget> _page = [
+    ScheduleListScreen(), 
+    MyReservedScreen(), 
+    DonationHistoryScreen(), 
+    ProfileScreen()
+  ];
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
@@ -29,6 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           items: <Widget>[
             Icon(Icons.list, size: 30),
             Icon(Icons.schedule_outlined, size: 30),
+            Icon(Icons.history, size: 30),
             Icon(Icons.perm_identity, size: 30),
           ],
           color: Colors.white,

@@ -17,18 +17,19 @@ import 'services/authenthication_manager.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 ApiService request = ApiService();
 final AuthenticationManager _authManager = Get.put(AuthenticationManager());
-final mem = _authManager.member.value;
+//final mem = _authManager.member.value;
+get currentMember => _authManager.member.value;
 final notificationController = Get.put(NotificationController());
 
 const String NOTIFICATION_TASK = "bloodDonationNotificationTask";
-// Background task handler
-@pragma('vm:entry-point') // Needed for background execution
+// BG task handler
+@pragma('vm:entry-point') // for BG
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     print("Background task executing: $task");
     
     try {
-      // Initialize Flutter services in background
+      // int Flutter services in BG
       WidgetsFlutterBinding.ensureInitialized();
       await GetStorage.init();
       
@@ -43,17 +44,14 @@ void callbackDispatcher() {
       );
       const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
       
-      // Check for notifications (simplified - you'll need to adapt this)
       final authManager = AuthenticationManager();
-      authManager.checkLoginStatus(); // Load member data
+      authManager.checkLoginStatus(); 
       
       if (authManager.member.value.memberID != '') {
         final notificationController = NotificationController();
          notificationController.fetchReserved();
         var data = notificationController.reservedForNotification;
         
-        // Process notifications similar to your current code
-        // ...
       }
       
       return Future.value(true);
@@ -78,9 +76,9 @@ void startNotificationTimer() {
     const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
     print('Triggering notification at ${DateTime.now()}');
-    print('memberID: ${mem.memberID}');
+    print('memberID: ${currentMember.memberID}');
 
-    if (mem.memberID != '') {
+    if (currentMember.memberID != '') {
       notificationController.fetchReserved();
       var data = notificationController.reservedForNotification;
       if(data.isNotEmpty) {
@@ -142,8 +140,7 @@ void main() async {
 
   // Request notification permissions for Android 13+
   final androidPlugin = flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+  .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
   if (androidPlugin != null) {
     final isEnabled = await androidPlugin.areNotificationsEnabled();
     if (isEnabled != null && !isEnabled) {
@@ -160,14 +157,13 @@ void main() async {
   Workmanager().registerPeriodicTask(
     "blood-donation-checker",
     NOTIFICATION_TASK,
-    //frequency: Duration(hours: 6), // Adjust as needed
-    frequency: Duration(seconds: 10), // Adjust as needed
+    //frequency: Duration(hours: 6), 
+    frequency: Duration(seconds: 10), 
     constraints: Constraints(
       networkType: NetworkType.connected,
     ),
   );
   
-  // You can keep startNotificationTimer() for when app is in foreground
   startNotificationTimer();
 
   runApp(GetMaterialApp(
