@@ -20,8 +20,53 @@ final AuthenticationManager _authManager = Get.put(AuthenticationManager());
 final mem = _authManager.member.value;
 final notificationController = Get.put(NotificationController());
 
+const String NOTIFICATION_TASK = "bloodDonationNotificationTask";
+// Background task handler
+@pragma('vm:entry-point') // Needed for background execution
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    print("Background task executing: $task");
+    
+    try {
+      // Initialize Flutter services in background
+      WidgetsFlutterBinding.ensureInitialized();
+      await GetStorage.init();
+      
+      // Setup notifications
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+        'blood_donation_channel', 
+        'blood_donation_channel',
+        channelDescription: 'Blood Donation Notifications',
+        importance: Importance.max,
+        priority: Priority.high,
+      );
+      const NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
+      
+      // Check for notifications (simplified - you'll need to adapt this)
+      final authManager = AuthenticationManager();
+      authManager.checkLoginStatus(); // Load member data
+      
+      if (authManager.member.value.memberID != '') {
+        final notificationController = NotificationController();
+         notificationController.fetchReserved();
+        var data = notificationController.reservedForNotification;
+        
+        // Process notifications similar to your current code
+        // ...
+      }
+      
+      return Future.value(true);
+    } catch (e) {
+      print("Error in background task: $e");
+      return Future.value(false);
+    }
+  });
+}
+
 void startNotificationTimer() {
-  const Duration interval = Duration(seconds: 10);
+  const Duration interval = Duration(seconds: 10); // ทุก 10 วิ
+  // const Duration interval = Duration(hours: 12); // 12ชม
   Timer.periodic(interval, (Timer timer) async {
     const AndroidNotificationDetails androidDetails =
     AndroidNotificationDetails('', 'blood_donation_channel',
@@ -40,7 +85,12 @@ void startNotificationTimer() {
       var data = notificationController.reservedForNotification;
       if(data.isNotEmpty) {
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
-        final DateTime DateNow = formatter.parse(DateTime.now().toString());
+        // final DateTime DateNow = formatter.parse(DateTime.now().toString());
+        final DateTime DateNow = DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day
+        );
         final DateTime DateDonation = formatter.parse(data[0].reserveDonationDate);
         final int difference = DateDonation.difference(DateNow).inDays;
         if(difference <= 3)
@@ -101,6 +151,23 @@ void main() async {
     }
   }
 
+    Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true // Set to false for production
+  );
+  
+  // Register periodic task (runs even when app is closed)
+  Workmanager().registerPeriodicTask(
+    "blood-donation-checker",
+    NOTIFICATION_TASK,
+    //frequency: Duration(hours: 6), // Adjust as needed
+    frequency: Duration(seconds: 10), // Adjust as needed
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+    ),
+  );
+  
+  // You can keep startNotificationTimer() for when app is in foreground
   startNotificationTimer();
 
   runApp(GetMaterialApp(
