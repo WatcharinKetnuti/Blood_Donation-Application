@@ -25,7 +25,11 @@ class LoginScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const FlutterLogo(size: 100),
+                    Image.asset(
+                      'assets/images/blood_donation_logo.png',
+                      width: 100,
+                      height: 100,
+                    ),
                     _gap(),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
