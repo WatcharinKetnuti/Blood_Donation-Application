@@ -158,7 +158,7 @@ void main() async {
     "blood-donation-checker",
     NOTIFICATION_TASK,
     //frequency: Duration(hours: 6), 
-    frequency: Duration(seconds: 10), 
+    frequency: Duration(seconds: 15),
     constraints: Constraints(
       networkType: NetworkType.connected,
     ),

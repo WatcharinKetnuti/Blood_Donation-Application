@@ -10,7 +10,8 @@ class ApiService {
 
   final AuthenticationManager _authManager = Get.put(AuthenticationManager());
   final dio = DIO.Dio(DIO.BaseOptions(
-    baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
+    baseUrl: 'https://blood1donationproject.alwaysdata.net/',
+   // baseUrl: 'http://10.0.2.2/Blood_Donation-Web/',
   // baseUrl: 'http://localhost/Blood_Donation-Web/',
   ));
 
