@@ -31,6 +31,8 @@ dependencies:
 
 
   flutter:
+    assets:
+    - assets/images/blood_donation_logo.png
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_local_notifications: ^18.0.1
