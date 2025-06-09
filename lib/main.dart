@@ -63,8 +63,8 @@ void callbackDispatcher() {
 }
 
 void startNotificationTimer() {
-  const Duration interval = Duration(seconds: 10); // ทุก 10 วิ
-  // const Duration interval = Duration(hours: 12); // 12ชม
+  //const Duration interval = Duration(seconds: 30);
+  const Duration interval = Duration(hours: 6);
   Timer.periodic(interval, (Timer timer) async {
     const AndroidNotificationDetails androidDetails =
     AndroidNotificationDetails('', 'blood_donation_channel',
@@ -126,7 +126,7 @@ void startNotificationTimer() {
 
 void main() async {
   print('= main.dart =');
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
   tz.initializeTimeZones();
@@ -152,17 +152,16 @@ void main() async {
     callbackDispatcher,
     isInDebugMode: true // Set to false for production
   );
-  
-  // Register periodic task (runs even when app is closed)
-  Workmanager().registerPeriodicTask(
-    "blood-donation-checker",
-    NOTIFICATION_TASK,
-    //frequency: Duration(hours: 6), 
-    frequency: Duration(seconds: 15),
-    constraints: Constraints(
-      networkType: NetworkType.connected,
-    ),
-  );
+
+  // Workmanager().registerPeriodicTask(
+  //   "blood-donation-checker",
+  //   NOTIFICATION_TASK,
+  //   //frequency: Duration(hours: 6),
+  //   frequency: Duration(seconds: 60),
+  //   constraints: Constraints(
+  //     networkType: NetworkType.connected,
+  //   ),
+  // );
   
   startNotificationTimer();
 
